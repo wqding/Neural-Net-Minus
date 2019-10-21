@@ -6,95 +6,124 @@ def sgm(x):
 def sgm_d(x):
     return sgm(x) * (1-sgm(x))
 
-#I'm like 80% sure this function works correctly
-# params are all matrix, but erros, z, bias, are n x 1
-def adjust_wNb(weights_mtx, z, errors, bias, prev_a, training_rate):
-    for row in range(len(weights_mtx) - 1):
-        dc_da = errors[row]
-        da_dz = sgm_d(z[row])
-        for col in range(len(weights_mtx[0]) - 1):
-            dz_dw = prev_a[col]
-            
-            dc_dw = dc_da * da_dz * dz_dw
-            dc_db = dc_da * da_dz * 1
-            
-            #this is right im pretty sure
-            weights_mtx[row][col] -= training_rate * dc_dw
-        
-        bias[row] -= training_rate * dc_db
-        
-    return weights_mtx, bias
-            
-            
-            
-    
-    
 
 class neural_network:
     # make this dynamic and able to have many layers later
-    def __init__(self, input_nodes, hidden_nodes, output_nodes):
-        self.learning_rate = 0.1
-        self.weights_ih = np.random.rand(hidden_nodes, input_nodes) * 2 - 1
-        self.weights_ho = np.random.rand(output_nodes, hidden_nodes) * 2 - 1
+    def __init__(self, layers):
+        self.learning_rate = 0.2
+        self.num_layers = len(layers)
         
-        self.bias_h = np.random.rand(hidden_nodes, 1) * 2 - 1
-        self.bias_o = np.random.rand(output_nodes, 1) * 2 - 1
+        # errors, grad, d_weights arrays are reversed
+        self.errors = []
+        self.gradients = []
+        self.d_weights = []
+        
+        #does not include the inputs, therefore is 1 less than num layers
+        self.layers_a = []
+        self.layers_z = []
+        
+        # weights is an array of m x n matrices, len = num layers - 1
+        self.weights = []
+         # bias is an array of 1 x n matrices, len = num layers - 1
+        self.bias = []
+        
+        for i in range(1, self.num_layers):
+            weight = np.random.rand(layers[i], layers[i-1]) * 2 - 1
+            # weight = np.full((layers[i], layers[i-1]), 0.5)
+            self.weights.append(weight)
+        
+        for i in range(1, self.num_layers):
+            b = np.random.rand(layers[i], 1) * 2 - 1
+            # b = np.full((layers[i], 1), 0.2)
+            self.bias.append(b)
     
     def feed_fwd(self, input_arr):
+        self.layers_a = []
+        self.layers_z = []
         #turning 1D array (1 row) into nD array (1 column)
-        input = np.reshape(input_arr, (len(input_arr), 1))
+        input = np.reshape(input_arr, (len(input_arr), 1))        
         
-        z_hidden = self.weights_ih.dot(input) + self.bias_h
-        a_hidden = sgm(z_hidden)
-
-        z_output = self.weights_ho.dot(a_hidden) + self.bias_o
-        a_output = sgm(z_output)
-        
-        print(a_output)
+        # minus 1 because activation layers does not include input layer
+        for i in range(self.num_layers - 1):
+            if i == 0:
+                curr_layer_z = self.weights[i].dot(input) + self.bias[i]
+                curr_layer_a = sgm(curr_layer_z)
+                self.layers_z.append(curr_layer_z)
+                self.layers_a.append(curr_layer_a)
+            else:
+                curr_layer_z = self.weights[i].dot(self.layers_a[i-1]) + self.bias[i]
+                curr_layer_a = sgm(curr_layer_z)
+                self.layers_z.append(curr_layer_z)
+                self.layers_a.append(curr_layer_a)
+        print(self.layers_a[self.num_layers-2])
+            
     
     def train(self, input_arr, target_arr):
         #turning 1D array (1 row) into nD array (1 column)
         input = np.reshape(input_arr, (len(input_arr), 1))
         target = np.reshape(target_arr, (len(target_arr), 1))
         
+        self.layers_a = []
+        self.layers_z = []
+        self.errors = []
         #feed fwd
-        z_hidden = self.weights_ih.dot(input) + self.bias_h
-        a_hidden = sgm(z_hidden)
-        
-        z_output = self.weights_ho.dot(a_hidden) + self.bias_o
-        a_output = sgm(z_output)
+        for i in range(self.num_layers - 1):
+            if i == 0:
+                curr_layer_z = self.weights[i].dot(input) + self.bias[i]
+                curr_layer_a = sgm(curr_layer_z)
+                self.layers_z.append(curr_layer_z)
+                self.layers_a.append(curr_layer_a)
+            else:
+                curr_layer_z = self.weights[i].dot(self.layers_a[i-1]) + self.bias[i]
+                curr_layer_a = sgm(curr_layer_z)
+                self.layers_z.append(curr_layer_z)
+                self.layers_a.append(curr_layer_a)
+                
 
         #train
-        errors_o = target - a_output
-        
-        # da_dz * dc_da * learning rate * dz_dw
-        gradients_o = sgm_d(z_output) * errors_o * self.learning_rate
-        d_weight_ho = gradients_o.dot(a_hidden.T)
-        
-        self.bias_o += gradients_o
-        self.weights_ho += d_weight_ho
-        
-        #this step is to calc the errors of the hidden layer, watch 10.15 Neural Nets if forgot: https://www.youtube.com/watch?v=r2-P1Fi1g60&list=PLRqwX-V7Uu6aCibgK1PTWWu9by6XFdCfh&index=15
-        #need to transponse because we're multiplying BACKWARDS and rows/cols need to match up
-        errors_h = self.weights_ho.T.dot(errors_o)
-        
-        # da_dz * dc_da * learning rate * dz_dw
-        gradients_h = sgm_d(z_hidden) * errors_h * self.learning_rate
-        d_weight_ih = gradients_h.dot(input.T)
-        
-        self.bias_h += gradients_h
-        self.weights_ih += d_weight_ih
-        
+        # from num layer-1 to 0
+        for i in reversed(range(self.num_layers - 1)):
+            if i == self.num_layers - 2:
+                curr_layer_err = target - self.layers_a[i]
+                
+            else:
+                #mutliply by the next layers error, i-1 bc errors array is reversed                
+                curr_layer_err = self.weights[i+1].T.dot(self.errors[(self.num_layers-3) - i])
+
+                # print("weights: ", self.weights[i+1])
+                # print("weights.T: ", self.weights[i+1].T)
+                # print("errors: ", self.errors[(self.num_layers-3) - i])
+            
+            self.errors.append(curr_layer_err)
+            curr_layer_grad = sgm_d(self.layers_z[i]) * curr_layer_err * self.learning_rate
+            # print(curr_layer_grad)
+            # print(curr_layer_err)
+            
+            if i == 0:
+                curr_layer_d_weight = curr_layer_grad.dot(input.T)
+            else:
+                curr_layer_d_weight = curr_layer_grad.dot(self.layers_a[i-1].T)
+            
+            self.bias[i] += curr_layer_grad
+            self.weights[i] += curr_layer_d_weight
+
+            # print(self.bias[i])
+            # print(self.weights[i])
 
         
         
         
-nn = neural_network(2, 2, 1);
+nn = neural_network([2, 100, 100, 100, 1]);
 
 input_arr = [[1, 1], [0, 0], [1, 0], [0, 1]]
 target_arr = [[0], [0], [1], [1]]
 
-for i in range(200000):
+nn.train([1, 0], [1])
+# nn.train([0, 0], [0])
+nn.train([1, 0], [1])
+
+
+for i in range(2000):
     idx = np.random.randint(0,4)
     nn.train(input_arr[idx], target_arr[idx])
         
