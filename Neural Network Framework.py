@@ -13,10 +13,8 @@ class neural_network:
         self.learning_rate = 0.2
         self.num_layers = len(layers)
         
-        # errors, grad, d_weights arrays are reversed
+        # errors array is reversed
         self.errors = []
-        # self.gradients = []
-        # self.d_weights = []
         
         # activations array does not include the inputs, therefore is 1 less than num layers
         self.layers_a = []
