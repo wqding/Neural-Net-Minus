@@ -101,22 +101,3 @@ class neural_network:
             self.weights[i] += curr_layer_d_weight
 
 
-
-# passing desired shape of neural network
-nn = neural_network([2, 100, 100, 100, 1]);
-
-# training data
-input_arr = [[1, 1], [0, 0], [1, 0], [0, 1]]
-target_arr = [[0], [0], [1], [1]]
-
-for i in range(2000):
-    # picking random data to train
-    idx = np.random.randint(0,4)
-    nn.train(input_arr[idx], target_arr[idx])
-        
-
-nn.feed_fwd([1, 0])
-nn.feed_fwd([0, 1])
-nn.feed_fwd([0, 0])
-nn.feed_fwd([1, 1])
-
