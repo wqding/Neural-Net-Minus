@@ -37,8 +37,8 @@ class neural_network:
         self.layers_a = []
         self.layers_z = []
         #turning 1D array (1 row) into nD array (1 column)
-        input = np.reshape(input_arr, (len(input_arr), 1))        
-        
+        input = np.reshape(input_arr, (len(input_arr), 1))
+                
         # minus 1 because activation layers does not include input layer
         for i in range(self.num_layers - 1):
             if i == 0:
@@ -51,8 +51,8 @@ class neural_network:
             self.layers_z.append(curr_layer_z)
             self.layers_a.append(curr_layer_a)
         
-        # print output layer
-        print(self.layers_a[self.num_layers-2])
+        # return output layer
+        return self.layers_a[self.num_layers-2]
             
     
     def train(self, input_arr, target_arr):
