@@ -6,11 +6,20 @@ def sgm(x):
 def sgm_d(x):
     return sgm(x) * (1-sgm(x))
 
+def ReLU(x):
+    return np.maximum(0, x)
+
+def dReLU(x):
+    # print(x)
+    x[x<=0] = 0
+    x[x>0] = 1
+    return x
+
 
 class neural_network:
     # make this dynamic and able to have many layers later
-    def __init__(self, layers):
-        self.learning_rate = 0.2
+    def __init__(self, layers, learning_rate):
+        self.learning_rate = learning_rate
         self.num_layers = len(layers)
         
         # errors array is reversed
