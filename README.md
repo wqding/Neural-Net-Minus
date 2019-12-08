@@ -2,10 +2,12 @@
 <img src="Neural_Net_Minus.png" width="40%">
 Neural Net Minus is a simple neural netowrk library I built completely from scratch.
 This library gives users access to the following hyperparamters:
-    * number of layers
-    * number of nodes in each layer
-    * learning rate
-    * activation function at each node
+<ul>
+   <li>number of layers</li>
+   <li>number of nodes in each layer</li>
+   <li>learning rate</li>
+   <li>activation function at each node</li>
+</ul>
     
 I implemented the forward and back propagation using only the numpy library.
 
