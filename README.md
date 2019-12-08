@@ -1,6 +1,7 @@
 # Neural-Net-Minus
 <img src="Neural_Net_Minus.png" width="40%">
 Neural Net Minus is a simple neural netowrk library I built completely from scratch.
+</br>
 This library gives users access to the following hyperparamters:
 <ul>
    <li>number of layers</li>
