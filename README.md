@@ -1,5 +1,5 @@
 # Neural-Net-Minus
-![](Neural_Net_Minus.png =300x300)
+![](https://github.com/wqding/Neural-Net-Minus/blob/master/Neural_Net_Minus.png =300x300)
 Neural Net Minus is a simple neural netowrk library I built completely from scratch.
 
 I implemented the forward and back propagation using only the numpy library.
