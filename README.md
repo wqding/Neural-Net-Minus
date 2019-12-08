@@ -9,6 +9,6 @@ Why? Because I was interested in the topic and I wanted to gain a deeper underst
 To use the library:
 1. Move the Neural_Net_Minus.py file to your project directory
 2. import Neural_Net_Minus.py in the file you want to use it: 
-  * import Neural_Net_Minus as NNM
+    * import Neural_Net_Minus as NNM
   
 Please reference XOR_example.py to see an example
