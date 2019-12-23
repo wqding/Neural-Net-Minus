@@ -13,12 +13,13 @@ This library gives users access to the following hyperparamters:
    <li>activation function at each node</li>
 </ul>
 
-Why? Because I was interested in the topic and I wanted to gain a deeper understanding of the vanilla neural network. 
+<h2>Why?</h2> 
+Because I was interested in the topic and I wanted to gain a deeper understanding of the vanilla neural network. 
 
 
 ...at least that was why I started. Once I realized the huge task I had taken on, I simply couldn't bear the thought(and the hit to my ego) of not finishing after I've invested so much time already.
 
-To use the library:
+<h2>To use the library:</h2>
 1. Move the Neural_Net_Minus.py file to your project directory
 2. import Neural_Net_Minus.py in the file you want to use it: 
     * "import Neural_Net_Minus as NNM"
