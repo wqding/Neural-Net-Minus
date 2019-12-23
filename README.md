@@ -16,7 +16,7 @@ This library gives users access to the following hyperparamters:
 Why? Because I was interested in the topic and I wanted to gain a deeper understanding of the vanilla neural network. 
 
 
-...at least that was why I started, and eventually I was too invested to not finish.
+...at least that was why I started. Once I realized the huge task I had taken on, I simply couldn't bear the thought(and the hit to my ego) of not finishing after I've invested so much time already.
 
 To use the library:
 1. Move the Neural_Net_Minus.py file to your project directory
