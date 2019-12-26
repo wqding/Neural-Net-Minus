@@ -1,6 +1,6 @@
 # Neural-Net-Minus
 <img src="Neural_Net_Minus.png" width="40%">
-Neural Net Minus is a simple neural netowrk library I built completely from scratch.
+Neural Net Minus is a simple neural netowrk library I built completely <strong>from scratch</strong>.
     
 I implemented the forward and back propagation using only the numpy library.
 
