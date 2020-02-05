@@ -20,8 +20,8 @@ Because I was interested in the topic and I wanted to gain a deeper understandin
 ...at least that was why I started. Once I realized the huge task I had taken on, I simply couldn't bear the thought(and the hit to my ego) of not finishing after I've invested so much time already.
 
 <h2>To use the library:</h2>
-1. Move the Neural_Net_Minus.py file to your project directory
-2. import Neural_Net_Minus.py in the file you want to use it: 
+1. Move the Neural_Net_Minus.py file to your project directory <br/>
+2. import Neural_Net_Minus.py in the file you want to use it: <br/>
     * "import Neural_Net_Minus as NNM"
 
 Please reference XOR_example.py to see an example
