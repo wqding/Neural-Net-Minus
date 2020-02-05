@@ -25,7 +25,7 @@ class neural_network:
             self.learning_rate = c_param.learning_rate
             self.num_layers = c_param.num_layers
             self.weights = c_param.weights
-            self.bias = c_param.bias
+            self.biases = c_param.biases
             
         else:
             self.learning_rate = learning_rate
@@ -34,15 +34,17 @@ class neural_network:
             # weights is an array of m x n matrices, len = num layers - 1
             self.weights = []
             # bias is an array of 1 x n matrices, len = num layers - 1
-            self.bias = []
+            self.biases = []
             
             for i in range(1, self.num_layers):
+                # initializing matrices representing weights between each layer with random values
                 weight = np.random.rand(c_param[i], c_param[i-1]) * 2 - 1
                 self.weights.append(weight)
             
             for i in range(1, self.num_layers):
+                # initializing matrices representing biases between each layer with random values
                 b = np.random.rand(c_param[i], 1) * 2 - 1
-                self.bias.append(b)
+                self.biases.append(b)
     
     def feed_fwd(self, input_arr):
         # activations array does not include the inputs, therefore is 1 less than num layers
@@ -54,10 +56,10 @@ class neural_network:
         # minus 1 because activation layers does not include input layer
         for i in range(self.num_layers - 1):
             if i == 0:
-                curr_layer_z = self.weights[i].dot(input) + self.bias[i]
+                curr_layer_z = self.weights[i].dot(input) + self.biases[i]
                 curr_layer_a = sgm(curr_layer_z)
             else:
-                curr_layer_z = self.weights[i].dot(layers_a[i-1]) + self.bias[i]
+                curr_layer_z = self.weights[i].dot(layers_a[i-1]) + self.biases[i]
                 curr_layer_a = sgm(curr_layer_z)
                 
             layers_z.append(curr_layer_z)
@@ -82,10 +84,10 @@ class neural_network:
         #feed fwd
         for i in range(self.num_layers - 1):
             if i == 0:
-                curr_layer_z = self.weights[i].dot(input) + self.bias[i]
+                curr_layer_z = self.weights[i].dot(input) + self.biases[i]
                 curr_layer_a = sgm(curr_layer_z)
             else:
-                curr_layer_z = self.weights[i].dot(layers_a[i-1]) + self.bias[i]
+                curr_layer_z = self.weights[i].dot(layers_a[i-1]) + self.biases[i]
                 curr_layer_a = sgm(curr_layer_z)
             
             layers_z.append(curr_layer_z)
@@ -109,13 +111,16 @@ class neural_network:
             else:
                 curr_layer_d_weight = curr_layer_grad.dot(layers_a[i-1].T)
             
-            self.bias[i] += curr_layer_grad
+            self.biases[i] += curr_layer_grad
             self.weights[i] += curr_layer_d_weight
             
+    # returns a new instance of neural network
     def copy(self):
         return neural_network(self)
         
-    # def mutate(self):
+    # # mututes the values in the weights and bias
+    # def mutate(self, NN):
+    #     #need to randomize some values in w and b
         
 
 
