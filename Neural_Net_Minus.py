@@ -118,9 +118,12 @@ class neural_network:
     def copy(self):
         return neural_network(self)
         
-    # # mututes the values in the weights and bias
-    # def mutate(self, NN):
-    #     #need to randomize some values in w and b
-        
-
-
+    # mututes the values in the weights and bias
+    def mutate(self):
+        #every number in every weight and bias matrix should have a 0.whatever chance of being randomized
+        #can implement a nudge up of down instead of completely randomizing later
+        for w_matrix in self.weights:
+            for i in np.nditer(w_matrix, op_flags=['readwrite']):
+                if np.random.random() > 0.1:
+                    i[...] = np.random.random() * 2 - 1
+    
